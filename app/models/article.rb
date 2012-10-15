@@ -81,7 +81,7 @@ class Article < Content
   end
 
   def merge_with(other_article_id)
-    #begin
+    begin
       a2 = Article.find(other_article_id)
       self.body += a2.body
       a2.comments.all.each do |comment|
@@ -91,9 +91,9 @@ class Article < Content
       a2.delete
       self.save
       self
-    #rescue
-    #  false
-    #end
+    rescue
+      false
+    end
   end
 
   attr_accessor :draft, :keywords
