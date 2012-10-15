@@ -38,26 +38,18 @@ class Admin::ContentController < Admin::BaseController
   end
   
   def merge
-    #begin
-    a1 = Article.find(params[:current_article])
-    #  a2 = Article.find(params[:merge_with])
-    #rescue
-    #  nil
-    #end
-    if not a1.merge_with(params[:merge_with])#if not a1 or not a2
-      flash[:error] = _("Article with id #{params[:merge_with]} could not be found")
+    if current_user.admin?
+      id = params[:id]
+      id = params[:article][:id] if params[:article] && params[:article][:id]
+      a1 = Article.find(id)
+      if not a1.merge_with(params[:merge_with])#if not a1 or not a2
+        flash[:error] = _("Article with id #{params[:merge_with]} could not be merged with")
+      else
+        flash[:notice] = _("Article #{id} merged with #{params[:merge_with]}")
+      end
     else
-      flash[:notice] = _("Article id #{params[:current_article]} merged with #{params[:merge_with]}")
-      #a1.body += a2.body
-      #a1.save
-      #a2.comments.all.each do |comment|
-      #  comment.article = a1
-      #  comment.save
-      #end
-      #a2.delete
-      # flash[:notice] = a1.body
+      flash[:error] = _("Current user not an admin")
     end
-    redirect_to :action => 'index'
   end
   
   def destroy
@@ -194,7 +186,12 @@ class Admin::ContentController < Admin::BaseController
       if @article.save
         destroy_the_draft unless @article.draft
         set_article_categories
-        set_the_flash
+        if params[:merge_with] and params[:merge_with] != ""
+          # flash[:notice] = _("Article merged with #{params[:merge_with]}")
+          merge
+        else
+          set_the_flash
+        end
         redirect_to :action => 'index'
         return
       end
