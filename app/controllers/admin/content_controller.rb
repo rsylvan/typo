@@ -187,8 +187,11 @@ class Admin::ContentController < Admin::BaseController
         destroy_the_draft unless @article.draft
         set_article_categories
         if params[:merge_with] and params[:merge_with] != ""
-          # flash[:notice] = _("Article merged with #{params[:merge_with]}")
-          merge
+          if params[:merge_with] != id
+            merge
+          else
+            flash[:error] = _("Articles cannot be merged with themselves")
+          end
         else
           set_the_flash
         end
