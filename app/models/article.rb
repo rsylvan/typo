@@ -83,7 +83,7 @@ class Article < Content
   def merge_with(other_article_id)
     #begin
       a2 = Article.find(other_article_id)
-      self.body += a2.body
+      self.body << a2.body
       a2.comments.all.each do |comment|
         comment.article = self
         comment.save
