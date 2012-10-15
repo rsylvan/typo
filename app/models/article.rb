@@ -85,7 +85,7 @@ class Article < Content
       a2 = Article.find(other_article_id)
       self.body += a2.body
       a2.comments.all.each do |comment|
-        comment.article = a1
+        comment.article = self
         comment.save
       end
       a2.delete
