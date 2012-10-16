@@ -92,6 +92,9 @@ class Article < Content
       if not a2
         throw "a2 not found"
       end
+      if not a2.body
+        throw "a2 got no body"
+      end
       self.body << a2.body
       a2.comments.all.each do |comment|
         comment.article = self
