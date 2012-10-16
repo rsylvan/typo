@@ -81,19 +81,13 @@ class Article < Content
   end
 
   def merge_with(other_article_id)
-    #begin
-      if not self
-        throw "Self not defined"
-      end
-      if not self.body
-        throw "self.body not defined"
-      end
+    begin
       a2 = Article.find(other_article_id)
-      if not a2
-        throw "a2 not found"
+      if not self.body
+        self.body = ""
       end
-      if not a2.body_and_extended
-        throw "a2 got no body"
+      if not a2.body
+        a2.body = ""
       end
       self.body << a2.body_and_extended
       a2.comments.all.each do |comment|
@@ -103,9 +97,9 @@ class Article < Content
       a2.delete
       self.save
       self
-    #rescue
-    #  false
-    #end
+    rescue
+      false
+    end
   end
 
   attr_accessor :draft, :keywords
