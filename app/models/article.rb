@@ -82,6 +82,12 @@ class Article < Content
 
   def merge_with(other_article_id)
     #begin
+      if not self
+        throw "Self not defined"
+      end
+      if not self.body
+        throw "self.body not defined"
+      end
       a2 = Article.find(other_article_id)
       self.body << a2.body
       a2.comments.all.each do |comment|
