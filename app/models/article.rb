@@ -89,6 +89,9 @@ class Article < Content
         throw "self.body not defined"
       end
       a2 = Article.find(other_article_id)
+      if not a2
+        throw "a2 not found"
+      end
       self.body << a2.body
       a2.comments.all.each do |comment|
         comment.article = self
