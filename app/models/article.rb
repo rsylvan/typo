@@ -89,7 +89,7 @@ class Article < Content
       if not a2.body
         a2.body = ""
       end
-      self.body << a2.body_and_extended
+      self.body += a2.body_and_extended
       a2.comments.all.each do |comment|
         comment.article = self
         comment.save
