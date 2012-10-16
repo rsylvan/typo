@@ -92,10 +92,10 @@ class Article < Content
       if not a2
         throw "a2 not found"
       end
-      if not a2.body
+      if not a2.body_and_extended
         throw "a2 got no body"
       end
-      self.body << a2.body
+      self.body << a2.body_and_extended
       a2.comments.all.each do |comment|
         comment.article = self
         comment.save
